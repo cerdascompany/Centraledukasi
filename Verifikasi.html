@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Verifikasi Sertifikat</title>
+<link rel="icon" type="image/png" href="Logo-Lingkaran.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#BB080B;--red-d:#8E0609;--ink:#1D1214;--mute:#5E5154;--bg:#FFFFFF;--soft:#FBF3F3;--line:#EBDCDD;--ok:#1E7B45;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:70px;scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh;display:flex;flex-direction:column}
+main{flex:1}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{line-height:1.15;margin:0 0 14px;letter-spacing:-.02em}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0 0 14px;color:var(--mute)}
+.btn{display:inline-block;padding:14px 26px;border-radius:10px;font-weight:700;font-family:inherit;font-size:1rem;border:2px solid var(--red);background:var(--red);color:#fff;cursor:pointer;transition:background .2s}
+.btn:hover{background:var(--red-d);border-color:var(--red-d)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.ghost{background:transparent;color:var(--red)}
+.btn.ghost:hover{background:var(--soft)}
+/* header (sama dengan landing page) */
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo-slot{display:flex;align-items:center;height:42px}
+.logo-slot img{height:100%;width:auto;max-width:200px;object-fit:contain;display:block}
+nav .btn{padding:9px 18px;font-size:.9rem}
+@media(max-width:420px){nav .btn{padding:8px 12px;font-size:.82rem}.logo-slot img{max-width:120px}}
+/* verifikasi */
+.vhero{padding:64px 0 72px;background:linear-gradient(180deg,var(--soft),var(--bg))}
+.vbox{max-width:680px;margin:0 auto;text-align:center}
+.vbox h1 span{color:var(--red)}
+.vbox>p{font-size:1.08rem;margin-left:auto;margin-right:auto;max-width:52ch}
+.vform{display:flex;gap:10px;margin-top:28px;text-align:left}
+.vform input{flex:1;min-width:0;height:54px;padding:0 18px;font:inherit;font-size:1rem;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px}
+.vform input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(187,8,11,.12)}
+.vform .btn{height:54px;padding:0 28px;white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hint{font-size:.88rem;margin:12px 0 0;color:var(--mute)}
+@media(max-width:560px){.vform{flex-direction:column}.vform .btn{width:100%}}
+/* hasil */
+#hasil{max-width:680px;margin:32px auto 0;text-align:left}
+.res{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:28px;animation:up .6s cubic-bezier(.2,.7,.2,1) both}
+.res.ok{border-top:5px solid var(--ok)}
+.res.no{border-top:5px solid var(--red)}
+.status{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.badge{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.badge svg{width:24px;height:24px}
+.ok .badge{background:var(--ok)}
+.no .badge{background:var(--red)}
+.status h2{font-size:1.25rem;margin:0}
+.status small{color:var(--mute);display:block;line-height:1.4}
+dl{margin:0;display:grid;gap:0}
+.row{display:grid;grid-template-columns:190px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+dt{color:var(--mute);font-weight:500}
+dd{margin:0;font-weight:700;color:var(--ink)}
+dd ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+dd li{position:relative;padding-left:22px;font-weight:700}
+dd li::before{content:"";position:absolute;left:0;top:.55em;width:10px;height:10px;border-radius:3px;background:var(--red)}
+.res p{margin:0}
+.demo{margin-top:16px;padding:10px 14px;border-radius:10px;background:#FFF4D6;color:#6B4E00;font-size:.88rem;text-align:left}
+@media(max-width:560px){.row{grid-template-columns:1fr;gap:2px}}
+/* footer */
+footer{border-top:1px solid var(--line);padding:32px 0 24px;font-size:.92rem}
+.copy{text-align:center;color:var(--mute);font-size:.85rem;margin:0}
+.fl{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:14px;color:var(--mute)}
+.fl a:hover{color:var(--red)}
+/* animasi */
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+header{animation:fade .6s both}
+.vbox>*{animation:up .8s cubic-bezier(.2,.7,.2,1) both}
+.vbox>*:nth-child(2){animation-delay:.12s}
+.vbox>*:nth-child(3){animation-delay:.24s}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav aria-label="Navigasi utama">
+      <!-- LOGO: images/logo.png (tinggi disarankan 84 px, tampil 42 px) -->
+      <a class="logo-slot" href="index.html" aria-label="CERDAS - Beranda"><img src="images/logo.png" alt="CERDAS" height="84" onerror="this.style.display='none'"></a>
+      <a class="btn back" href="index.html"><span aria-hidden="true">←</span> Kembali ke Beranda</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="vhero">
+    <div class="wrap">
+      <div class="vbox">
+        <h1>Verifikasi <span>Sertifikat</span></h1>
+        <p>Silakan masukkan Nomor Peserta Anda untuk memverifikasi keabsahan data kegiatan CERDAS.</p>
+
+        <div>
+          <form class="vform" id="form" autocomplete="off" novalidate>
+            <label class="sr" for="nomor">Nomor Peserta</label>
+            <input id="nomor" name="nomor" type="text" inputmode="text" placeholder="Masukkan Nomor Peserta" autocapitalize="characters" spellcheck="false" required>
+            <button class="btn" type="submit" id="cari">Verifikasi</button>
+          </form>
+          <p class="hint">Nomor Peserta tertera pada sertifikat Anda.</p>
+          <div id="hasil" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fl">
+      <a href="index.html">Beranda</a>
+      <a href="index.html#program">Program</a>
+      <a href="index.html#kontak">Hubungi Kami</a>
+    </div>
+    <p class="copy">© 2026 CERDAS. Seluruh hak cipta dilindungi.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+
+  var DATA_URL = "data.csv";
+
+
+  var GUNAKAN_DATA_CONTOH = false;
+  var DATA_CONTOH = [
+    {no:"CRD-2026-0001", nama:"Contoh Peserta Satu", instansi:"Instansi Contoh A", kegiatan:"Pelatihan Contoh 1"},
+    {no:"CRD-2026-0001", nama:"Contoh Peserta Satu", instansi:"Instansi Contoh A", kegiatan:"Webinar Contoh 2"},
+    {no:"CRD-2026-0002", nama:"Contoh Peserta Dua", instansi:"Instansi Contoh B", kegiatan:"Diklat Contoh 3"}
+  ];
+  /* ============================================== */
+
+  var form = document.getElementById("form"),
+      input = document.getElementById("nomor"),
+      btn = document.getElementById("cari"),
+      out = document.getElementById("hasil"),
+      cache = null, demoDipakai = false;
+
+  function norm(v){ return String(v == null ? "" : v).replace(/\s+/g,"").toUpperCase(); }
+  function teks(v){ return String(v == null ? "" : v).trim(); }
+
+  function parseCSV(t){
+    t = t.replace(/^\uFEFF/,"");
+    var first = t.split(/\r?\n/)[0], d = ",";
+    [";","\t"].forEach(function(c){ if(first.split(c).length > first.split(d).length) d = c; });
+    var rows = [], row = [], cell = "", q = false;
+    for(var i = 0; i < t.length; i++){
+      var c = t[i];
+      if(q){
+        if(c === '"'){ if(t[i+1] === '"'){ cell += '"'; i++; } else q = false; }
+        else cell += c;
+      } else if(c === '"') q = true;
+      else if(c === d){ row.push(cell); cell = ""; }
+      else if(c === "\n" || c === "\r"){
+        if(c === "\r" && t[i+1] === "\n") i++;
+        row.push(cell); cell = ""; rows.push(row); row = [];
+      } else cell += c;
+    }
+    if(cell !== "" || row.length){ row.push(cell); rows.push(row); }
+    return rows;
+  }
+
+  function muatData(){
+    if(cache) return cache;
+    cache = fetch(DATA_URL)
+      .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.arrayBuffer(); })
+      .then(function(buf){
+        var txt;
+        try { txt = new TextDecoder("utf-8",{fatal:true}).decode(buf); }
+        catch(e){ txt = new TextDecoder("windows-1252").decode(buf); }
+        var rows = parseCSV(txt);
+        var h = (rows.shift() || []).map(function(x){ return x.trim().toLowerCase(); });
+        var iNo = h.indexOf("nomor peserta"),
+            iNama = h.indexOf("nama peserta") > -1 ? h.indexOf("nama peserta") : h.indexOf("nama"),
+            iIns = h.indexOf("instansi"),
+            iKeg = h.indexOf("kegiatan");
+        if(iNo < 0 || iNama < 0) throw new Error("Header CSV tidak sesuai");
+        return rows.filter(function(r){ return teks(r[iNo]) !== ""; }).map(function(r){
+          return {no:r[iNo], nama:r[iNama], instansi:iIns > -1 ? r[iIns] : "", kegiatan:iKeg > -1 ? r[iKeg] : ""};
+        });
+      })
+      .catch(function(err){
+        if(GUNAKAN_DATA_CONTOH){ demoDipakai = true; return DATA_CONTOH; }
+        cache = null; throw err;
+      });
+    return cache;
+  }
+
+  var ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var ICON_NO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+  function el(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
+
+  function status(ok, judul, sub){
+    var s = el("div","status"), b = el("div","badge"), t = el("div");
+    b.innerHTML = ok ? ICON_OK : ICON_NO;
+    t.appendChild(el("h2",null,judul)); t.appendChild(el("small",null,sub));
+    s.appendChild(b); s.appendChild(t);
+    return s;
+  }
+  function baris(label, isi){
+    var r = el("div","row"), dt = el("dt",null,label), dd = el("dd");
+    if(Array.isArray(isi)){
+      var ul = el("ul"); isi.forEach(function(x){ ul.appendChild(el("li",null,x)); }); dd.appendChild(ul);
+    } else dd.textContent = isi;
+    r.appendChild(dt); r.appendChild(dd);
+    return r;
+  }
+
+  function tampil(node){ out.innerHTML = ""; out.appendChild(node); }
+
+  function tampilDitemukan(hit){
+    var card = el("div","res ok");
+    card.appendChild(status(true,"Data Terverifikasi","Nomor Peserta terdaftar di CERDAS."));
+    var dl = el("dl");
+    dl.appendChild(baris("Nama", teks(hit[0].nama)));
+    dl.appendChild(baris("Instansi", teks(hit[0].instansi) || "-"));
+    var kg = []; hit.forEach(function(h){ var k = teks(h.kegiatan); if(k && kg.indexOf(k) < 0) kg.push(k); });
+    dl.appendChild(baris("Kegiatan yang telah diikuti", kg.length ? kg : ["-"]));
+    card.appendChild(dl);
+    if(demoDipakai) card.appendChild(el("div","demo","Mode contoh: data di atas bukan data asli. Pasang file data.csv lalu set GUNAKAN_DATA_CONTOH = false."));
+    tampil(card);
+  }
+  function tampilTidak(msg){
+    var card = el("div","res no");
+    card.appendChild(status(false,"Data Tidak Ditemukan",msg));
+    card.appendChild(el("p",null,"Periksa kembali penulisan Nomor Peserta pada sertifikat Anda. Jika masih bermasalah, silakan hubungi tim CERDAS."));
+    tampil(card);
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var q = norm(input.value);
+    if(!q){ tampilTidak("Nomor Peserta belum diisi."); input.focus(); return; }
+    btn.disabled = true; btn.textContent = "Memeriksa...";
+    muatData().then(function(data){
+      var hit = data.filter(function(d){ return norm(d.no) === q; });
+      if(hit.length) tampilDitemukan(hit); else tampilTidak("Nomor Peserta tidak terdaftar.");
+    }).catch(function(){
+      tampilTidak("Data belum dapat dimuat. Silakan coba lagi nanti.");
+    }).then(function(){
+      btn.disabled = false; btn.textContent = "Verifikasi";
+    });
+  });
+})();
+</script>
+</body>
+</html>
